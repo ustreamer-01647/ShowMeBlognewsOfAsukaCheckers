@@ -14,7 +14,9 @@
 	<link rel="stylesheet" type="text/css" href="../style/style.css" />
 	<title><?php echo PageTitle;?></title>
 	<style type="text/css">
-		.item { margin:5px;padding:5px; border: solid 1px};
+		.item { margin:5px;padding:5px; border: solid 1px; } table,th,td { border: solid 1px; }
+		.articlelist { list-style-type: none; }
+		.linkinpage { font-family: monospace; margin-right: 0.5em; }
 	</style>
 </head>
 <body>
@@ -22,9 +24,10 @@
 	<p><a href="../">ウェブサイトトップへ戻る</a></p>
 	<p><a href="http://asuka--sen-nin.ddo.jp/checker/index.cgi">アスカチェッカー</a>配信者らのブログ新着情報を表示しています．掲載追加拒否承ります．スタイルシートデザインを募集しています．</p>
 	<h1>お品書き</h1>
+	<p>文字「<span class="linkinpage">■</span>」はこのページ内にリンクしています．記事タイトル部分は各ブログ記事単体ページへリンクしています．</p>
 	<ul>
-		<li><a href="<?php echo GeneratorFilename; ?>">情報を最新の状態に更新する</a>（前回の更新日時は<?php echo date("Y年m月j日(D) G時i分", $lastUpdate);?>）</li>
-		<li><a href="#Articles">記事</a>（下記リストは各ブログ記事単体ページへリンクしています）</li>
+		<li><a href="<?php echo GeneratorFilename; ?>">最新の情報に更新する</a>（最終確認日時は<?php echo date("Y年m月j日(D) G時i分", $lastUpdate);?>）</li>
+		<li><a href="#Articles">記事</a></li>
 		<?php include_once(ListFilename);?>
 		<li><a href="#Spec">入力されているフィードほか各種仕様</a></li>
 	</ul>

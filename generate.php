@@ -1,12 +1,15 @@
+#!/usr/local/bin/php
 <?php
 header("Content-type: text/html; charset=utf-8");
+
+chdir("/home/paul/public_html/asukachrss");
 // ----------------------------------------------------------------------
 // 設定ファイル
 require_once("config.inc.php");
 
 // ----------------------------------------------------------------------
 // 実行間隔制限
-// ファイルロックa
+// ファイルロック
 /*
 前回の実行記録を調べる
 前回の実行時刻よりIgnoreSpan秒経過していない場合，処理を中止する
@@ -109,23 +112,16 @@ while ($itemCounter < $outputFeedItemLimit)
 	// 投稿日時フォーマット
 	$date = $item->get_date("Y年m月j日(D) G時i分");
 	// 投稿日時とフィードソース名
-	$dateandbase = $date.'投稿	- <a href="'.$item->get_base().'">'.$item->get_feed()->get_title().'</a>';
+	$dateandbase = $date.'投稿 - <a href="'.$item->get_base().'">'.$item->get_feed()->get_title().'</a>';
 	// パーマネントリンク
 	$permalink = $item->get_permalink();
-	// パーマネントリンク加工
-	if ( ReplaceLodaJpPermalink )
-	{
-		if ( 0 === strpos($permalink, "http://loda.jp/" ) )
-		{
-			$permalink = str_replace( "%3D", "=", $permalink );
-		}
-	}
+//	$permalink = processPermalink( $item->get_permalink() );
 	// リストデータ追記
-	$listData .= '<li><a href="'.$permalink.'">'.$item->get_title().'</a><small> - '.$dateandbase.'</small></li>'."\n";
+	$listData .= '<li><a href="#article'.$itemCounter.'" class="linkinpage">■</a> <a href="'.$permalink.'">'.$item->get_title().'</a><small> - '.$dateandbase.'</small></li>'."\n";
 	// 記事データ追記
 	$articlesData .= <<<EOT
 	<div class="item">
-	<h2 class="title"><a href="{$permalink}" name="#article{$itemCounter}">{$item->get_title()}</a></h2>
+	<h2 class="title"><a href="{$permalink}" name="article{$itemCounter}">{$item->get_title()}</a></h2>
 	<p><small>{$dateandbase}</small></p>
 	<div class="content">{$item->get_content()}</div>
 	</div>
@@ -139,7 +135,7 @@ EOT;
 // ----------------------------------------------------------------------
 // ファイル出力
 file_put_contents( ArticlesFilename, $articlesData, LOCK_EX );
-file_put_contents( ListFilename, "<ul>".$listData."</ul>", LOCK_EX );
+file_put_contents( ListFilename, "<ul class=\"articlelist\">".$listData."</ul>", LOCK_EX );
 
 // ----------------------------------------------------------------------
 // 後始末
@@ -155,13 +151,28 @@ echo 'Finished! Return to <a href="'.ViewFilename.'">Viewpage</a>';
 // アイテム無視条件
 function ignoreItem( $item )
 {
-	// seesaa広告除去対策
+	// seesaa広告除去
 	if ( IgnoreSeesaaAds )
 	{
+		/*
+		// SimplePie_ItemのAuthorはフィード統合時に削除されるらしい
+		if( !(FALSE === mb_strpos($item->get_author()->get_name(), "ads by Seesaa")) )
+			return TRUE;
+		*/
+		// タイトルを基に判定する
 		if( !(FALSE === mb_strpos($item->get_title(), "[PR]注目のキーワード「")) )
+			return TRUE;
+	}
+	
+	// ameblo広告除去
+	if ( IgnoreAmebloAds )
+	{
+		// パーマネントリンクを基に判定する
+		if( !(FALSE === mb_strpos($item->get_permalink(), "http://rss.rssad.jp/rss/ad/")) )
 			return TRUE;
 	}
 
 	return FALSE;
 }
+
 ?>

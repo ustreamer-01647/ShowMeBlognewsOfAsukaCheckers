@@ -44,8 +44,15 @@ $feedSources = array(
 	"http://suzukix.seesaa.net/index20.rdf",//butaman
 	"http://heiho0zikkyou0box.blog34.fc2.com/?xml",//heihou
 	"http://asukachanneler.blog.fc2.com/?xml",// asukach-ler
+	"http://rssblog.ameba.jp/hukufukuaki/rss20.xml", // hatarakuruma
+	"http://karasu0504.blog.fc2.com/?xml",//karasu
+	"http://oblate01.blog.fc2.com/?xml",// motsuko
+	"http://honji37744.blog.fc2.com/?xml",// honji-
+	"http://zarame42715.game-ss.com/ATOM/",// zarame
+	"http://blog.livedoor.jp/saro01836/atom.xml",// saro
+	"http://01647.seesaa.net/index20.rdf",// paul
+	
 );
-
 // フィードあたりアイテム数上限
 define( "FeedItemLimit", 10);
 
@@ -58,14 +65,14 @@ define( "LinkToPageTop", '<a href="#top">このページの上端へ戻る</a>' 
 // フィードキャッシュ有効時間（秒）
 define( "CacheDuration", 60*60 );
 
-// 未来の記事を除外する
+// 未来の記事を除去する
 define( "IgnoreFuture", TRUE);
 
-// seesaaの広告を除外する
+// seesaaの広告を除去する
 define( "IgnoreSeesaaAds", TRUE );
 
-// loda.jp permalinkの，最初の%3Dを=に置換する
-define( "ReplaceLodaJpPermalink", TRUE );
+// amebloの広告を除去する
+define( "IgnoreAmebloAds", TRUE );
 
 // ----------------------------------------------------------------------
 // 実行タイミング管理
