@@ -50,8 +50,8 @@ $feedSources = array(
 	"http://honji37744.blog.fc2.com/?xml",// honji-
 	"http://zarame42715.game-ss.com/ATOM/",// zarame
 	"http://blog.livedoor.jp/saro01836/atom.xml",// saro
-	"http://01647.seesaa.net/index20.rdf",// paul
-	
+	"http://01647.tumblr.com/rss",// paul
+	"http://nana4ch.blog.fc2.com/?xml", // nns774
 );
 // フィードあたりアイテム数上限
 define( "FeedItemLimit", 10);

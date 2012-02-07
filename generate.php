@@ -110,7 +110,7 @@ while ($itemCounter < $outputFeedItemLimit)
 	}
 	// （<a href="#article'.$itemCounter.'">ページ内リンク#'.$itemCounter.'</a>）
 	// 投稿日時フォーマット
-	$date = $item->get_date("Y年m月j日(D) G時i分");
+	$date = $item->get_date("Y年n月j日(D) G時i分");
 	// 投稿日時とフィードソース名
 	$dateandbase = $date.'投稿 - <a href="'.$item->get_base().'">'.$item->get_feed()->get_title().'</a>';
 	// パーマネントリンク
