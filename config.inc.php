@@ -3,8 +3,32 @@
 /*
 	rss aggregate
 */
-// ----------------------------------------------------------------------
 
+// ----------------------------------------------------------------------
+// 出力設定クラス
+class OutputSpec{
+	var $id; // 識別子
+	var $viewFilename; // 閲覧ページ
+	var $articlesFilename; // 記事本体
+	var $listFilename; // 記事リスト
+	var $feedItemLimit; // 記事最大数
+	var $dontStripTag; // 除去しないタグ
+	
+	function __construct ( $_id, $_viewFilename, $_articlesFilename, $_listFilename
+		, $_feedItemLimit, $_dontStripTag = null )
+	{
+		$this->id = $_id;
+		$this->viewFilename = $_viewFilename;
+		$this->articlesFilename = $_articlesFilename;
+		$this->listFilename = $_listFilename;
+		$this->feedItemLimit = $_feedItemLimit;
+		$this->dontStripTag = $_dontStripTag;
+	}
+}
+
+/*
+記事本体，リスト，striptag，閲覧ページ
+*/
 // ----------------------------------------------------------------------
 // 表示
 
@@ -23,14 +47,15 @@ define( "GeneratorFilename", "generate.php" );
 // キャッシュディレクトリ（書込権限必要）
 define( "CacheLocation", "cache" );
 
-// 記事ファイル
-define( "ArticlesFilename", "articles.inc.php" );
-
-// 記事リストファイル
-define( "ListFilename", "list.inc.php" );
-
 // 実行記録ファイル
 define( "LogFilename", "executelog.txt");
+
+// ----------------------------------------------------------------------
+// 出力仕様設定
+
+$outputSpec[] = new OutputSpec("heavy", "Hview.php", "Harticles.inc.php" , "Hlist.inc.php", 10
+	, array( "object", "param", "embed", "iframe" ));
+$outputSpec[] = new OutputSpec("light", "Lview.php", "Larticles.inc.php" , "Llist.inc.php", 20);
 
 // ----------------------------------------------------------------------
 // フィード入出力設定
@@ -52,15 +77,14 @@ $feedSources = array(
 	"http://blog.livedoor.jp/saro01836/atom.xml",// saro
 	"http://01647.tumblr.com/rss",// paul
 	"http://nana4ch.blog.fc2.com/?xml", // nns774
+	"http://ux.getuploader.com/asukach_01/rss", // asukach loda ( kasagiri )
+	"http://leon11020.exblog.jp/index.xml", // leon11010
 );
 // フィードあたりアイテム数上限
 define( "FeedItemLimit", 10);
 
-// 出力フィードアイテム数上限
-define( "OutputFeedItemLimit", 20 );
-
 // ページトップへ戻るリンク
-define( "LinkToPageTop", '<a href="#top">このページの上端へ戻る</a>' );
+define( "LinkToPageTop", '<p><a href="#top">このページの上端へ戻る</a></p>' );
 
 // フィードキャッシュ有効時間（秒）
 define( "CacheDuration", 60*60 );
