@@ -1,1 +1,1 @@
-<?php include_once ( "Lview.php" ) ?>
+<?php include_once ( "view.php" ) ?>

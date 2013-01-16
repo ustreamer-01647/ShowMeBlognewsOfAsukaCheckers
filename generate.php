@@ -3,7 +3,6 @@
 header("Content-type: text/html; charset=utf-8");
 
 chdir("/home/paul/public_html/asukachrss");
-// ----------------------------------------------------------------------
 // 設定ファイル
 require_once("config.inc.php");
 
@@ -79,7 +78,42 @@ fclose( $fp );
 echo 'Finished! Return to <a href="'.ViewFilename.'">Viewpage</a>';
 
 // ----------------------------------------------------------------------
+// アイテム必要条件
+// 必要条件を満足するか調べる．満足する場合TRUEを返す．
+function necessaryItem( $item )
+{
+	// 必須語句確認
+	if ( NecessaryWord )
+	{
+		// ヒット数
+		$count = 0;
+		// config.inc.phpでの宣言を取り込む
+		global $necessaryWords;
+		foreach( (array)$necessaryWords as $word )
+		{
+			// 指定語句がない場合，$resultはFALSE．
+			// FALSEでない場合，$countをインクリメントする．
+			// タイトル
+			$result = mb_stripos( $item->get_title(), $word );
+			if ( !(FALSE === $result) ) $count++;
+			// カテゴリ
+			$result = mb_stripos( $item->get_category(), $word );
+			if ( !(FALSE === $result) ) $count++;
+			// 本文
+			$result = mb_stripos( $item->get_content(), $word );
+			if ( !(FALSE === $result) ) $count++;
+		}
+		// 必須語句を含まない場合，$countは0．
+		if ( $count == 0 ) return FALSE;
+	}
+	
+	return TRUE;
+
+}
+
+// ----------------------------------------------------------------------
 // アイテム無視条件
+// 不要条件を満足するか調べる．満足する場合，TRUEを返す．
 function ignoreItem( $item )
 {
 	// seesaa広告除去
@@ -102,13 +136,13 @@ function ignoreItem( $item )
 		if( !(FALSE === mb_strpos($item->get_permalink(), "http://rss.rssad.jp/rss/ad/")) )
 			return TRUE;
 	}
-
+	
 	return FALSE;
 }
 
 // ----------------------------------------------------------------------
 // 未来の記事日時をスキップする
-function skipFuture ( $feed, $itemCounter )
+function skipFuture ( $feed, &$itemCounter )
 {
 	global $nowtime;
 	foreach ($feed->get_items() as $item)
@@ -120,6 +154,13 @@ function skipFuture ( $feed, $itemCounter )
 		else
 			break;
 	}
+}
+
+// ----------------------------------------------------------------------
+// 除去アイテム出力
+function dumpIgnoredItem ( $itemCounter, $item )
+{
+	echo "{$itemCounter} <a href=\"{$item->get_permalink()}\">{$item->get_title()}</a><br />\n";
 }
 
 // ----------------------------------------------------------------------
@@ -170,14 +211,16 @@ function build ( $feed, $outputSpec )
 		// コードを簡潔に表現するため，$item とおく
 		$item = $feed->get_item($itemCounter);
 		// フィード終端であればループを抜ける
-		if ( is_null( $item )	) break;
+		if ( is_null( $item ) ) break;
 		// 条件次第でこのアイテムをスキップする
-		if ( ignoreItem( $item ))
+		if ( ignoreItem( $item ) || !(necessaryItem( $item )) )
 		{
+			dumpIgnoredItem( $itemCounter, $item );
 			$outputSpec->feedItemLimit++;
 			$itemCounter++;
 			continue;
 		}
+		
 		// 投稿日時フォーマット
 		$date = $item->get_date("Y年n月j日(D) G時i分");
 		// 投稿日時とフィードソース名
@@ -200,7 +243,6 @@ EOT;
 		// フィードアイテムループ終端
 		$itemCounter++;
 	}
-	
 
 	// ----------------------------------------------------------------------
 	// ファイル出力
