@@ -55,6 +55,7 @@
 }?>
 		」が含まれている場合に限る
 <?php } /* NeccesaryWord */ ?>
+		<li>除去された記事は<a href="ignored.inc.php">ignored.inc.php</a>で確認できる</li>
 		<li>generate.phpへアクセスすることで手動更新できる．ただし，次の更新には1時間の猶予が必要</li>
 		<li>画像やリンクなどの要素は有効だが，Javascriptなどは無効化している．たとえば，動画埋込がここでは無効化される．無効化される要素は<a href="http://simplepie.org/wiki/reference/simplepie/strip_htmltags">SimplePie Documentation: strip_htmltags()</a>に記述されている．</li>
 	</ul>

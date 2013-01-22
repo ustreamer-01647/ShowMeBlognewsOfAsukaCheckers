@@ -11,16 +11,18 @@ class OutputSpec{
 	var $viewFilename; // 閲覧ページ
 	var $articlesFilename; // 記事本体
 	var $listFilename; // 記事リスト
+	var $ignoredArticleTableFilename; // 無視した記事データ表
 	var $feedItemLimit; // 記事最大数
 	var $dontStripTag; // 除去しないタグ
 	
 	function __construct ( $_id, $_viewFilename, $_articlesFilename, $_listFilename
-		, $_feedItemLimit, $_dontStripTag = null )
+		, $_ignoredArticleTableFilename, $_feedItemLimit, $_dontStripTag = null )
 	{
 		$this->id = $_id;
 		$this->viewFilename = $_viewFilename;
 		$this->articlesFilename = $_articlesFilename;
 		$this->listFilename = $_listFilename;
+		$this->ignoredArticleTableFilename = $_ignoredArticleTableFilename;
 		$this->feedItemLimit = $_feedItemLimit;
 		$this->dontStripTag = $_dontStripTag;
 	}
@@ -53,7 +55,7 @@ define( "LogFilename", "executelog.txt");
 // ----------------------------------------------------------------------
 // 出力仕様設定
 
-$outputSpec[] = new OutputSpec("normal", "view.php", "articles.inc.php" , "list.inc.php", 15);
+$outputSpec[] = new OutputSpec("normal", "view.php", "articles.inc.php" , "list.inc.php", "ignored.inc.php", 15);
 
 /*
 $outputSpec[] = new OutputSpec("heavy", "Hview.php", "Harticles.inc.php" , "Hlist.inc.php", 10

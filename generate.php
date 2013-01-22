@@ -85,6 +85,7 @@ function necessaryItem( $item )
 	// 必須語句確認
 	if ( NecessaryWord )
 	{
+		echo ("aaaaaaaa<br />");
 		// ヒット数
 		$count = 0;
 		// config.inc.phpでの宣言を取り込む
@@ -205,6 +206,15 @@ function build ( $feed, $outputSpec )
 	$listData;
 	// 記事データ
 	$articlesData;
+	// 無視した記事
+	$ignoredArticleTable = <<< EOT
+<?php @header("Content-type: text/html; charset=utf-8");?>
+<table>
+	<thead>
+	<tr><th>itemCounter</th><th>item</th></tr>
+	</thead>
+	<tbody>
+EOT;
 	
 	while ($itemCounter < $outputSpec->feedItemLimit)
 	{
@@ -215,7 +225,7 @@ function build ( $feed, $outputSpec )
 		// 条件次第でこのアイテムをスキップする
 		if ( ignoreItem( $item ) || !(necessaryItem( $item )) )
 		{
-			dumpIgnoredItem( $itemCounter, $item );
+			$ignoredArticleTable .= "<tr><th>{$itemCounter}</th><td><a href=\"{$item->get_permalink()}\">{$item->get_title()}</a></td></tr>\n";
 			$outputSpec->feedItemLimit++;
 			$itemCounter++;
 			continue;
@@ -248,6 +258,13 @@ EOT;
 	// ファイル出力
 	file_put_contents( $outputSpec->articlesFilename, $articlesData, LOCK_EX );
 	file_put_contents( $outputSpec->listFilename, "<ul class=\"articlelist\">".$listData."</ul>", LOCK_EX );
+	$ignoredArticleTable .= <<< EOT
+</tbody>
+</table>
+EOT;
+	file_put_contents( $outputSpec->ignoredArticleTableFilename, $ignoredArticleTable, LOCK_EX );
+	include_once ( $outputSpec->ignoredArticleTableFilename );
+
 
 }
 ?>
