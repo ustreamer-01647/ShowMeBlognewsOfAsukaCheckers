@@ -85,7 +85,6 @@ function necessaryItem( $item )
 	// 必須語句確認
 	if ( NecessaryWord )
 	{
-		echo ("aaaaaaaa<br />");
 		// ヒット数
 		$count = 0;
 		// config.inc.phpでの宣言を取り込む
