@@ -2,15 +2,15 @@ ShowMeBlognewsOfAsukaCheckers
 
 https://github.com/ustreamer-01647/ShowMeBlognewsOfAsukaCheckers/wiki
 
-#機能
+# 機能
 いくつかのRSS/ATOMフィードを集約し，表示する．
 
-#動作環境
+# 動作環境
 RSS/ATOM処理のためSimple Pieを使用している．各自で用意すること．
 http://simplepie.org/
 PHP 5.2.10，Simple Pie 1.2で動作した．
 
-#使い方
+# 使い方
 1. simplepie.incを同じディレクトリに配置する
 2. articles.inc.php，executelog.txt，list.inc.phpを作成しておく．書き換え可能にする
 3. cacheディレクトリを作成しておく．ファイル作成可能にする
