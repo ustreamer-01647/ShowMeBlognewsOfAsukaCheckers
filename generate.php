@@ -87,8 +87,19 @@ function necessaryItem( $item )
 	{
 		// ヒット数
 		$count = 0;
-		// config.inc.phpでの宣言を取り込む
+		// config.inc.phpでの宣言を参照する
 		global $necessaryWords;
+		// カテゴリ情報整理
+		$category = $item->get_category();
+		$categoryLabel = "";
+		if ( isset( $category ) )
+		{
+			foreach ( (array)$category as $c )
+			{
+				$categoryLabel .= $c;
+			}
+		}
+		// 検索
 		foreach( (array)$necessaryWords as $word )
 		{
 			// 指定語句がない場合，$resultはFALSE．
@@ -97,7 +108,7 @@ function necessaryItem( $item )
 			$result = mb_stripos( $item->get_title(), $word );
 			if ( !(FALSE === $result) ) $count++;
 			// カテゴリ
-			$result = mb_stripos( $item->get_category(), $word );
+			$result = mb_stripos( $categoryLabel, $word );
 			if ( !(FALSE === $result) ) $count++;
 			// 本文
 			$result = mb_stripos( $item->get_content(), $word );
